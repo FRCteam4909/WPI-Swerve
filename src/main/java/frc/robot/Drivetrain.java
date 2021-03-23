@@ -15,15 +15,23 @@ public class Drivetrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+  final double kInchesToMeters = .0254;
+  final double kHalfWheelBaseWidthInches  = 15.0;
+  final double kHalfWheelBaseWidthMeters = kHalfWheelBaseWidthInches * kInchesToMeters;
 
-  private final SwerveModule m_frontLeft = new SwerveModule(1, 2);
-  private final SwerveModule m_frontRight = new SwerveModule(3, 4);
-  private final SwerveModule m_backLeft = new SwerveModule(5, 6);
-  private final SwerveModule m_backRight = new SwerveModule(7, 8);
+  final double kHalfWheelBaseLengthInches = 15.0;
+  final double kHalfWheelBaseLengthMeters = kHalfWheelBaseLengthInches * kInchesToMeters;
+
+  private final Translation2d m_frontLeftLocation  = new Translation2d( kHalfWheelBaseWidthMeters,  kHalfWheelBaseLengthMeters);
+  private final Translation2d m_frontRightLocation = new Translation2d( kHalfWheelBaseWidthMeters, -kHalfWheelBaseLengthMeters);
+  private final Translation2d m_backLeftLocation   = new Translation2d(-kHalfWheelBaseWidthMeters,  kHalfWheelBaseLengthMeters);
+  private final Translation2d m_backRightLocation  = new Translation2d(-kHalfWheelBaseWidthMeters, -kHalfWheelBaseLengthMeters);
+
+  // @todo make theese constants somewhere
+  private final SwerveModule m_frontLeft  = new SwerveModule(1, 2, 0, 1);
+  private final SwerveModule m_frontRight = new SwerveModule(3, 4, 2, 3);
+  private final SwerveModule m_backLeft   = new SwerveModule(5, 6, 4, 5);
+  private final SwerveModule m_backRight  = new SwerveModule(7, 8, 6, 7);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
