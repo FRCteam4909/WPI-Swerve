@@ -86,6 +86,7 @@ public class SwerveModule {
     int dioEncoderChanA,
     int dioEncoderChanB
   ) {
+      
     // m_driveMotor = new PWMVictorSPX(driveMotorChannel);
     // m_turningMotor = new PWMVictorSPX(turningMotorChannel);
 
@@ -96,25 +97,29 @@ public class SwerveModule {
     // @todo current limits on the motor
     // m_driveMotorA.setSmartCurrentLimit(limit)
 
-    m_aPID = m_driveMotorA.getPIDController();
-    m_aPID.setP(kMotorP);
-    m_aPID.setI(kMotorI);
-    m_aPID.setD(kMotorD);
-    m_aPID.setIZone(kMotorIz);
-    m_aPID.setFF(kMotorFf);
-    m_aPID.setOutputRange(kMotorMin, kMotorMax);
-
     
+    m_aPID = m_driveMotorA.getPIDController();
+    if (driveMotorChannelA == 1) {
+      m_aPID.setP(kMotorP);
+      m_aPID.setI(kMotorI);
+      m_aPID.setD(kMotorD);
+      m_aPID.setIZone(kMotorIz);
+      m_aPID.setFF(kMotorFf);
+      m_aPID.setOutputRange(kMotorMin, kMotorMax);
+    }
+      
     m_driveMotorB = new CANSparkMax(driveMotorChannelB, MotorType.kBrushless);
     m_driveEncoderB = m_driveMotorB.getEncoder();
     m_driveMotorB.restoreFactoryDefaults();
     m_bPID = m_driveMotorB.getPIDController();
-    m_bPID.setP(kMotorP);
-    m_bPID.setI(kMotorI);
-    m_bPID.setD(kMotorD);
-    m_bPID.setIZone(kMotorIz);
-    m_bPID.setFF(kMotorFf);
-    m_bPID.setOutputRange(kMotorMin, kMotorMax);
+    if (driveMotorChannelA == 1) {
+      m_bPID.setP(kMotorP);
+      m_bPID.setI(kMotorI);
+      m_bPID.setD(kMotorD);
+      m_bPID.setIZone(kMotorIz);
+      m_bPID.setFF(kMotorFf);
+      m_bPID.setOutputRange(kMotorMin, kMotorMax);
+    }
 
     m_yawEncoder = new Encoder(dioEncoderChanA, dioEncoderChanB, true, EncodingType.k4X);
     // final double kRad2RPM = 2 * Math.PI;
