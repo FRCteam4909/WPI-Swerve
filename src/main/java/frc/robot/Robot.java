@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Robot extends TimedRobot {
   private final Joystick m_controller = new Joystick(0);
@@ -17,6 +21,18 @@ public class Robot extends TimedRobot {
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+
+  private ShuffleboardTab sb_tab_drive;
+  private NetworkTableEntry sb_drive_js_x, sb_drive_js_y, sb_drive_js_z, sb_drive_enable;
+
+  @Override
+  public void robotInit() {
+    sb_tab_drive = Shuffleboard.getTab("Drive");
+    sb_drive_js_x = sb_tab_drive.add("js x", 0).withSize(128, 128).getEntry();
+    sb_drive_js_y = sb_tab_drive.add("js y", 0).getEntry();
+    sb_drive_js_z = sb_tab_drive.add("js z", 0).getEntry();
+    sb_drive_enable = sb_tab_drive.add("enable", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  }
 
   @Override
   public void autonomousPeriodic() {
@@ -50,7 +66,13 @@ public class Robot extends TimedRobot {
     final var rot =
         -m_rotLimiter.calculate(m_controller.getZ())
             * frc.robot.Drivetrain.kMaxAngularSpeed;
+    
+    sb_drive_js_x.setDouble(xSpeed);
+    sb_drive_js_y.setDouble(ySpeed);
+    sb_drive_js_z.setDouble(rot);
 
-    m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative);
+    if (sb_drive_enable.getBoolean(false)) {
+      m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative); 
+    }
   }
 }

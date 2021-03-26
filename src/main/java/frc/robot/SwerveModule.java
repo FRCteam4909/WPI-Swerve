@@ -26,7 +26,7 @@ public class SwerveModule {
 
   // private final SpeedController m_driveMotor;
   // private final SpeedController m_turningMotor;
-
+  
   // private final Encoder m_driveEncoder = new Encoder(0, 1);
   // private final Encoder m_turningEncoder = new Encoder(2, 3);
 
