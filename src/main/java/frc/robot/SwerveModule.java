@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveModule {
   private static final double kWheelRadius = 0.0508;
@@ -172,6 +173,9 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(m_yawEncoder.get()));
+
+    SmartDashboard.putNumber("Desired Speed", state.speedMetersPerSecond);
+    SmartDashboard.putNumber("Desired Angle", state.angle.getDegrees());
 
 
 
