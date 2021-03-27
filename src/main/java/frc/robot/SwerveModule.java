@@ -239,12 +239,18 @@ public class SwerveModule {
     double b = (yawRPM / GEAR_RATIO_12) - (wheelRPM / GEAR_RATIO_123);
 
     // need to normalize as the yaw can't correct if both are over max speed
-    // final double MAX_RPM = 4500;
-    // if (a > 4500 || b > 4500) {
-    //   if (a > b) {
-    //     a - b
-    //   }
-    // }
+    final double MAX_RPM = 4000;
+    if (a > 4500 || b > 4500) {
+      double other = (Math.min(a, b) / Math.max(a, b)) * MAX_RPM;
+      if (Math.abs(a) > Math.abs(b)) {
+        a = Math.copySign(MAX_RPM, a);
+        b = Math.copySign(other, b);
+      } else {
+        a = Math.copySign(other, a);
+        b = Math.copySign(MAX_RPM, b);
+      }
+    }
+    
 
     SmartDashboard.putNumber("Requested A RPM", a);
     SmartDashboard.putNumber("Requested B RPM", b);
